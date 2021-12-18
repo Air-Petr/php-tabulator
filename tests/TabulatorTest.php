@@ -6,23 +6,20 @@ use PHPUnit\Framework\TestCase;
 class TabulatorTest extends TestCase
 {
     /**
-     * Test echo function.
+     * Test get function.
      *
      * @return void
      */
-    public function testEcho(): void
+    public function testGetter(): void
     {
-        $this->expectOutputString('foo');
-        Tabulator::echo();
-    }
+        $expectedTable = <<<END
+            put   some data 
+            print new  table
+            END;
 
-    /**
-     * Test prepare function.
-     *
-     * @return void
-     */
-    public function testPrepare(): void
-    {
-        $this->assertSame('foo', Tabulator::prepare());
+        $this->assertSame($expectedTable, Tabulator::get([
+            ['put', 'some', 'data'],
+            ['print', 'new', 'table'],
+        ]));
     }
 }

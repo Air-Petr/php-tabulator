@@ -8,32 +8,15 @@ namespace AirPetr;
 class Tabulator
 {
     /**
-     * Echo formatted data as table.
+     * Return formatted data.
      *
-     * @return void
-     */
-    public static function echo(): void
-    {
-        echo (new self())->getFormattedData();
-    }
-
-    /**
-     * Prepare formatted data as table.
+     * @param array $data
      *
      * @return string
      */
-    public static function prepare(): string
+    public static function get(array $data): string
     {
-        return (new self())->getFormattedData();
-    }
-
-    /**
-     * Return formatted date.
-     *
-     * @return string
-     */
-    protected function getFormattedData(): string
-    {
-        return 'foo';
+        $formatter = new TableFormatter($data);
+        return $formatter->getTable();
     }
 }
