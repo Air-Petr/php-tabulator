@@ -33,7 +33,7 @@ class TableFormatter
         $format = $this->getRowFormat($sizes);
         $rows = $this->getRows($format);
 
-        return implode(PHP_EOL, $rows);
+        return implode(PHP_EOL, $rows) . PHP_EOL;
     }
 
     /**
@@ -81,7 +81,7 @@ class TableFormatter
 
     /**
      * Return formatted rows.
-     * 
+     *
      * @param string $format
      *
      * @return array

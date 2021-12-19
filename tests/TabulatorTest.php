@@ -15,6 +15,7 @@ class TabulatorTest extends TestCase
         $expectedTable = <<<END
             put   some data 
             print new  table
+            
             END;
 
         $this->assertSame($expectedTable, Tabulator::get([
