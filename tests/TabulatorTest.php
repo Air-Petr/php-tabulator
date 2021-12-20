@@ -23,4 +23,23 @@ class TabulatorTest extends TestCase
             ['print', 'new', 'table'],
         ]));
     }
+
+    /**
+     * Test numeric types.
+     *
+     * @return void
+     */
+    public function testNumericTypes(): void
+    {
+        $expectedTable = <<<END
+            put   some 10 1.23
+            print new   1  1.2
+            
+            END;
+
+        $this->assertSame($expectedTable, Tabulator::get([
+            ['put', 'some', 10, 1.23],
+            ['print', 'new', 1, 1.2],
+        ]));
+    }
 }

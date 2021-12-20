@@ -2,6 +2,8 @@
 
 namespace AirPetr;
 
+use AirPetr\Classes\ColumnType;
+
 /**
  * Format data to table.
  */
@@ -15,11 +17,26 @@ class TableFormatter
     protected array $data;
 
     /**
+     * Size of columns.
+     *
+     * @var array|null
+     */
+    protected ?array $sizes;
+
+    /**
+     * Type of columns.
+     *
+     * @var array|null
+     */
+    protected ?array $types;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data)
     {
         $this->data = $data;
+        $this->types = [];
     }
 
     /**
@@ -29,19 +46,21 @@ class TableFormatter
      */
     public function getTable(): string
     {
-        $sizes = $this->getColumnSizes();
-        $format = $this->getRowFormat($sizes);
+        $this->setColumnSizes();
+        $this->setColumnTypes();
+
+        $format = $this->getRowFormat();
         $rows = $this->getRows($format);
 
         return implode(PHP_EOL, $rows) . PHP_EOL;
     }
 
     /**
-     * Return column sizes.
+     * Set column sizes.
      *
      * @return array
      */
-    protected function getColumnSizes(): array
+    protected function setColumnSizes(): void
     {
         $sizes = [];
 
@@ -59,21 +78,42 @@ class TableFormatter
             }
         }
 
-        return $sizes;
+        $this->sizes = $sizes;
+    }
+
+    protected function setColumnTypes(): void
+    {
+        if (!$this->data) {
+            return;
+        }
+
+        $rowToReference = (count($this->data) > 1)
+            ? $this->data[1]
+            : $this->data[0];
+
+        foreach ($rowToReference as $cell) {
+            if (is_numeric($cell)) {
+                $this->types[] = ColumnType::NUMBER;
+            } else {
+                $this->types[] = ColumnType::STRING;
+            }
+        }
     }
 
     /**
      * Return row format.
      *
-     * @param array $sizes
-     *
      * @return string
      */
-    protected function getRowFormat(array $sizes): string
+    protected function getRowFormat(): string
     {
         $formatParts = [];
-        foreach ($sizes as $key => $colSize) {
-            $formatParts[] = '%-' . $colSize . 's';
+        foreach ($this->sizes as $key => $colSize) {
+            if ($this->types[$key] === ColumnType::STRING) {
+                $formatParts[] = '%-' . $colSize . 's';
+            } else {
+                $formatParts[] = '%' . $colSize . 's';
+            }
         }
 
         return implode(' ', $formatParts);
