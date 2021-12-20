@@ -2,7 +2,8 @@
 
 namespace AirPetr;
 
-use AirPetr\Classes\ColumnType;
+use AirPetr\Classes\ColumnTypes\NumericType;
+use AirPetr\Classes\ColumnTypes\StringType;
 
 /**
  * Format data to table.
@@ -93,9 +94,9 @@ class TableFormatter
 
         foreach ($rowToReference as $cell) {
             if (is_numeric($cell)) {
-                $this->types[] = ColumnType::NUMBER;
+                $this->types[] = new NumericType();
             } else {
-                $this->types[] = ColumnType::STRING;
+                $this->types[] = new StringType();
             }
         }
     }
@@ -109,11 +110,7 @@ class TableFormatter
     {
         $formatParts = [];
         foreach ($this->sizes as $key => $colSize) {
-            if ($this->types[$key] === ColumnType::STRING) {
-                $formatParts[] = '%-' . $colSize . 's';
-            } else {
-                $formatParts[] = '%' . $colSize . 's';
-            }
+            $formatParts[] = $this->types[$key]->getFormat($colSize);
         }
 
         return implode(' ', $formatParts);
