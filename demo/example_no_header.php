@@ -2,4 +2,4 @@
 
 require __DIR__ . '/print_function.php';
 
-printFileData('data.csv');
+printFileData('data_no_header.csv');

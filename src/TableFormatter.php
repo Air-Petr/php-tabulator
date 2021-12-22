@@ -88,11 +88,7 @@ class TableFormatter
             return;
         }
 
-        $rowToReference = (count($this->data) > 1)
-            ? $this->data[1]
-            : $this->data[0];
-
-        foreach ($rowToReference as $cell) {
+        foreach ($this->data[0] as $cell) {
             if (is_numeric($cell)) {
                 $this->types[] = new NumericType();
             } else {
