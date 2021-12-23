@@ -11,12 +11,13 @@ class Tabulator
      * Return formatted data.
      *
      * @param array $data
+     * @param array|null $headers
      *
      * @return string
      */
-    public static function get(array $data): string
+    public static function get(array $data, ?array $headers = []): string
     {
-        $formatter = new TableFormatter($data);
+        $formatter = new TableFormatter($data, $headers);
         return $formatter->getTable();
     }
 }

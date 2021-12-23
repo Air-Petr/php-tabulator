@@ -32,11 +32,19 @@ class TableFormatter
     protected ?array $types;
 
     /**
+     * List of headers.
+     *
+     * @var array|null
+     */
+    protected ?array $headers;
+
+    /**
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct(array $data, ?array $headers)
     {
         $this->data = $data;
+        $this->headers = $headers;
         $this->types = [];
     }
 
@@ -50,10 +58,15 @@ class TableFormatter
         $this->setColumnSizes();
         $this->setColumnTypes();
 
-        $format = $this->getRowFormat();
-        $rows = $this->getRows($format);
+        $result = '';
 
-        return implode(PHP_EOL, $rows) . PHP_EOL;
+        if ($this->headers) {
+            $result .= $this->getHeaderRow();
+        }
+
+        $result .= implode(PHP_EOL, $this->getRows()) . PHP_EOL;
+
+        return $result;
     }
 
     /**
@@ -64,8 +77,13 @@ class TableFormatter
     protected function setColumnSizes(): void
     {
         $sizes = [];
+        $data = $this->data;
 
-        foreach ($this->data as $row) {
+        if ($this->headers) {
+            $data = array_merge([$this->headers], $data);
+        }
+
+        foreach ($data as $row) {
             foreach ($row as $colNumber => $colData) {
                 $count = strlen($colData);
 
@@ -98,6 +116,24 @@ class TableFormatter
     }
 
     /**
+     * Return header row.
+     *
+     * @return string
+     */
+    protected function getHeaderRow(): string
+    {
+        $types = [];
+
+        foreach ($this->sizes as $size) {
+            $types[] = (new StringType())->getFormat($size);
+        }
+
+        $formatString = implode(' ', $types) . PHP_EOL;
+
+        return sprintf($formatString, ...$this->headers);
+    }
+
+    /**
      * Return row format.
      *
      * @return string
@@ -115,12 +151,12 @@ class TableFormatter
     /**
      * Return formatted rows.
      *
-     * @param string $format
-     *
      * @return array
      */
-    protected function getRows(string $format): array
+    protected function getRows(): array
     {
+        $format = $this->getRowFormat();
+
         $rows = [];
 
         foreach ($this->data as $row) {

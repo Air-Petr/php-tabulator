@@ -42,4 +42,23 @@ class TabulatorTest extends TestCase
             ['print', 'new', 1, 1.2],
         ]));
     }
+
+    /**
+     * Test table with header.
+     *
+     * @return void
+     */
+    public function testHeader(): void
+    {
+        $expectedTable = <<<END
+            put   some foo barbaz
+            print new    1    1.2
+            
+            END;
+
+        $this->assertSame($expectedTable, Tabulator::get(
+            [['print', 'new', 1, 1.2]],
+            ['put', 'some', 'foo', 'barbaz']
+        ));
+    }
 }
