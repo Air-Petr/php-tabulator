@@ -55,9 +55,28 @@ class TableFormatter
      */
     public function getTable(): string
     {
+        $this->prepareTableStructureData();
+        return $this->getResultString();
+    }
+
+    /**
+     * Prepare metadata of table.
+     *
+     * @return void
+     */
+    protected function prepareTableStructureData(): void
+    {
         $this->setColumnSizes();
         $this->setColumnTypes();
+    }
 
+    /**
+     * Return table string.
+     *
+     * @return string
+     */
+    protected function getResultString(): string
+    {
         $result = '';
 
         if ($this->headers) {
@@ -72,7 +91,7 @@ class TableFormatter
     /**
      * Set column sizes.
      *
-     * @return array
+     * @return void
      */
     protected function setColumnSizes(): void
     {
