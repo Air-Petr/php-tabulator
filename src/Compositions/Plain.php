@@ -2,11 +2,55 @@
 
 namespace AirPetr\Compositions;
 
+use AirPetr\Classes\ColumnTypes\StringType;
+
 /**
  * Plain table composition.
  */
 class Plain
 {
+    /**
+     * Body data.
+     *
+     * @var array
+     */
+    protected array $data;
+
+    /**
+     * Column headers.
+     *
+     * @var array
+     */
+    protected array $headers;
+
+    /**
+     * Column sizes.
+     *
+     * @var array
+     */
+    protected array $sizes;
+
+    /**
+     * Column types.
+     *
+     * @var array
+     */
+    protected array $types;
+
+    /**
+     * Constructor.
+     *
+     * @param array $data
+     * @param array $headers
+     */
+    public function __construct(array $data, array $headers, array $sizes, array $types)
+    {
+        $this->data = $data;
+        $this->headers = $headers;
+        $this->sizes = $sizes;
+        $this->types = $types;
+    }
+
     /**
      * Return table.
      *
@@ -19,7 +63,9 @@ class Plain
         $this->printHeader();
         $this->printBody();
 
-        return ob_get_flush();
+        $table = ob_get_contents();
+        ob_end_clean();
+        return $table;
     }
 
     /**
@@ -29,7 +75,17 @@ class Plain
      */
     protected function printHeader(): void
     {
-        echo 'header' . PHP_EOL;
+        if (!$this->headers) {
+            return;
+        }
+
+        $headers = [];
+        foreach ($this->headers as $key => $header) {
+            $headers[] = (new StringType())->getFormat($this->sizes[$key]);
+        }
+
+        $headerFormat = implode(' ',$headers) . PHP_EOL;
+        printf($headerFormat, ...$this->headers);
     }
 
     /**
@@ -39,6 +95,19 @@ class Plain
      */
     protected function printBody(): void
     {
-        echo 'body' . PHP_EOL;
+        if (!$this->data) {
+            return;
+        }
+
+        foreach ($this->data as $row) {
+            $columns = [];
+            foreach ($row as $key => $cell) {
+                $columns[] = $this->types[$key]->getFormat($this->sizes[$key]);
+
+            }
+
+            $rowFormat = implode(' ',$columns) . PHP_EOL;
+            printf($rowFormat, ...$row);
+        }
     }
 }

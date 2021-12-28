@@ -4,6 +4,7 @@ namespace AirPetr;
 
 use AirPetr\Classes\ColumnTypes\NumericType;
 use AirPetr\Classes\ColumnTypes\StringType;
+use AirPetr\Compositions\Plain;
 
 /**
  * Format data to table.
@@ -40,6 +41,7 @@ class TableFormatter
 
     /**
      * @param array $data
+     * @param array|null $headers
      */
     public function __construct(array $data, ?array $headers)
     {
@@ -77,15 +79,8 @@ class TableFormatter
      */
     protected function getResultString(): string
     {
-        $result = '';
-
-        if ($this->headers) {
-            $result .= $this->getHeaderRow();
-        }
-
-        $result .= implode(PHP_EOL, $this->getRows()) . PHP_EOL;
-
-        return $result;
+        $composition = new Plain($this->data, $this->headers, $this->sizes, $this->types);
+        return $composition->getTable();
     }
 
     /**
@@ -132,55 +127,5 @@ class TableFormatter
                 $this->types[] = new StringType();
             }
         }
-    }
-
-    /**
-     * Return header row.
-     *
-     * @return string
-     */
-    protected function getHeaderRow(): string
-    {
-        $types = [];
-
-        foreach ($this->sizes as $size) {
-            $types[] = (new StringType())->getFormat($size);
-        }
-
-        $formatString = implode(' ', $types) . PHP_EOL;
-
-        return sprintf($formatString, ...$this->headers);
-    }
-
-    /**
-     * Return row format.
-     *
-     * @return string
-     */
-    protected function getRowFormat(): string
-    {
-        $formatParts = [];
-        foreach ($this->sizes as $key => $colSize) {
-            $formatParts[] = $this->types[$key]->getFormat($colSize);
-        }
-
-        return implode(' ', $formatParts);
-    }
-
-    /**
-     * Return formatted rows.
-     *
-     * @return array
-     */
-    protected function getRows(): array
-    {
-        $format = $this->getRowFormat();
-
-        $rows = [];
-
-        foreach ($this->data as $row) {
-            $rows[] = sprintf($format, ...$row);
-        }
-        return $rows;
     }
 }
