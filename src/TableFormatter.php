@@ -20,20 +20,6 @@ class TableFormatter
     protected array $data;
 
     /**
-     * Size of columns.
-     *
-     * @var array|null
-     */
-    protected ?array $sizes;
-
-    /**
-     * Type of columns.
-     *
-     * @var array|null
-     */
-    protected ?array $types;
-
-    /**
      * List of headers.
      *
      * @var array|null
@@ -48,8 +34,6 @@ class TableFormatter
     {
         $this->data = $data;
         $this->headers = $headers;
-
-        $this->setColumnTypes();
     }
 
     /**
@@ -59,18 +43,7 @@ class TableFormatter
      */
     public function getTable(): string
     {
-        $this->prepareTableStructureData();
         return $this->getResultString();
-    }
-
-    /**
-     * Prepare metadata of table.
-     *
-     * @return void
-     */
-    protected function prepareTableStructureData(): void
-    {
-        $this->setColumnSizes();
     }
 
     /**
@@ -80,49 +53,7 @@ class TableFormatter
      */
     protected function getResultString(): string
     {
-        $composition = new Plain($this->data, $this->headers, $this->sizes, $this->types);
+        $composition = new Plain($this->data, $this->headers);
         return $composition->getTable();
-    }
-
-    /**
-     * Set column sizes.
-     *
-     * @return void
-     */
-    protected function setColumnSizes(): void
-    {
-        $sizes = [];
-        $data = $this->data;
-
-        if ($this->headers) {
-            $data = array_merge([$this->headers], $data);
-        }
-
-        foreach ($data as $row) {
-            foreach ($row as $colNumber => $colData) {
-                $count = strlen($colData);
-
-                if (empty($sizes[$colNumber])) {
-                    $sizes[$colNumber] = $count;
-                }
-
-                if ($count > $sizes[$colNumber]) {
-                    $sizes[$colNumber] = $count;
-                }
-            }
-        }
-
-        $this->sizes = $sizes;
-    }
-
-    /**
-     * Set column types.
-     *
-     * @return void
-     */
-    protected function setColumnTypes(): void
-    {
-        $factory = new TypesListFactory(array_merge([$this->headers], $this->data));
-        $this->types = $factory->getTypes();
     }
 }
