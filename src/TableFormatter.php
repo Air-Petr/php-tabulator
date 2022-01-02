@@ -4,6 +4,7 @@ namespace AirPetr;
 
 use AirPetr\Classes\ColumnTypes\NumericType;
 use AirPetr\Classes\ColumnTypes\StringType;
+use AirPetr\Classes\TypesListFactory;
 use AirPetr\Compositions\Plain;
 
 /**
@@ -43,11 +44,12 @@ class TableFormatter
      * @param array $data
      * @param array|null $headers
      */
-    public function __construct(array $data, ?array $headers)
+    public function __construct(array $data, array $headers)
     {
         $this->data = $data;
         $this->headers = $headers;
-        $this->types = [];
+
+        $this->setColumnTypes();
     }
 
     /**
@@ -69,7 +71,6 @@ class TableFormatter
     protected function prepareTableStructureData(): void
     {
         $this->setColumnSizes();
-        $this->setColumnTypes();
     }
 
     /**
@@ -114,18 +115,14 @@ class TableFormatter
         $this->sizes = $sizes;
     }
 
+    /**
+     * Set column types.
+     *
+     * @return void
+     */
     protected function setColumnTypes(): void
     {
-        if (!$this->data) {
-            return;
-        }
-
-        foreach ($this->data[0] as $cell) {
-            if (is_numeric($cell)) {
-                $this->types[] = new NumericType();
-            } else {
-                $this->types[] = new StringType();
-            }
-        }
+        $factory = new TypesListFactory(array_merge([$this->headers], $this->data));
+        $this->types = $factory->getTypes();
     }
 }
