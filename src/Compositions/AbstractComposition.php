@@ -2,6 +2,7 @@
 
 namespace AirPetr\Compositions;
 
+use AirPetr\Classes\ThemeConfig;
 use AirPetr\Classes\TypesListFactory;
 
 /**
@@ -40,11 +41,11 @@ abstract class AbstractComposition
     protected array $types = [];
 
     /**
-     * Whether columns have types.
+     * Table theme (format) config.
      *
-     * @var bool
+     * @var ThemeConfig
      */
-    protected bool $hasTypes = true;
+    protected ThemeConfig $theme;
 
     /**
      * Constructor.
@@ -56,6 +57,7 @@ abstract class AbstractComposition
     {
         $this->data = $data;
         $this->headers = $headers;
+        $this->theme = new ThemeConfig();
 
         $this->setColumnSizes();
         $this->setColumnTypes();
@@ -99,7 +101,7 @@ abstract class AbstractComposition
      */
     protected function setColumnTypes(): void
     {
-        $factory = new TypesListFactory(array_merge([$this->headers], $this->data));
+        $factory = new TypesListFactory(array_merge([$this->headers], $this->data), $this->theme->hasTypes);
         $this->types = $factory->getTypes();
     }
 }
