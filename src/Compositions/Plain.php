@@ -42,7 +42,7 @@ class Plain extends AbstractComposition
             $headers[] = (new StringType())->getFormat($this->sizes[$key]);
         }
 
-        $headerFormat = implode(' ',$headers) . PHP_EOL;
+        $headerFormat = implode($this->getHeaderJoint(), $headers) . PHP_EOL;
         printf($headerFormat, ...$this->headers);
     }
 
@@ -61,10 +61,9 @@ class Plain extends AbstractComposition
             $columns = [];
             foreach ($row as $key => $cell) {
                 $columns[] = $this->types[$key]->getFormat($this->sizes[$key]);
-
             }
 
-            $rowFormat = implode(' ',$columns) . PHP_EOL;
+            $rowFormat = implode($this->getBodyJoint(), $columns) . PHP_EOL;
             printf($rowFormat, ...$row);
         }
     }

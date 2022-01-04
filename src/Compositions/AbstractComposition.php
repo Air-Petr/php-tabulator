@@ -104,4 +104,24 @@ abstract class AbstractComposition
         $factory = new TypesListFactory(array_merge([$this->headers], $this->data), $this->theme->hasTypes);
         $this->types = $factory->getTypes();
     }
+
+    /**
+     * Return joint of the header columns.
+     *
+     * @return string
+     */
+    protected function getHeaderJoint(): string
+    {
+        return $this->getBodyJoint();
+    }
+
+    /**
+     * Return joint of the body columns.
+     *
+     * @return string
+     */
+    protected function getBodyJoint(): string
+    {
+        return ' ';
+    }
 }
