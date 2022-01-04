@@ -10,14 +10,28 @@ use AirPetr\Classes\ColumnTypes\StringType;
  */
 class TypesListFactory
 {
+    /**
+     * Data of the table rows.
+     *
+     * @var array
+     */
     protected array $rows;
 
     /**
-     * @param array $rows
+     * Whether rows have types.
+     *
+     * @var bool
      */
-    public function __construct(array $rows)
+    protected bool $hasTypes;
+
+    /**
+     * @param array $rows
+     * @param bool $hasTypes
+     */
+    public function __construct(array $rows, bool $hasTypes = true)
     {
         $this->rows = $rows;
+        $this->hasTypes = $hasTypes;
     }
 
     /**
@@ -30,7 +44,7 @@ class TypesListFactory
         $types = [];
 
         foreach ($this->getRowForParsing() as $cell) {
-            if (is_numeric($cell)) {
+            if ($this->hasTypes && is_numeric($cell)) {
                 $types[] = new NumericType();
             } else {
                 $types[] = new StringType();

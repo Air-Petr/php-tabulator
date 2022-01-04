@@ -58,10 +58,7 @@ abstract class AbstractComposition
         $this->headers = $headers;
 
         $this->setColumnSizes();
-
-        if ($this->hasTypes) {
-            $this->setColumnTypes();
-        }
+        $this->setColumnTypes();
     }
 
     /**
