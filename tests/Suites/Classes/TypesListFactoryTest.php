@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Suites\Classes;
 
 use AirPetr\Classes\ColumnTypes\NumericType;
 use AirPetr\Classes\ColumnTypes\StringType;

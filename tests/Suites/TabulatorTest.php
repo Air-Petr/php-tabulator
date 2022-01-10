@@ -1,9 +1,10 @@
 <?php
 
-use AirPetr\Tabulator;
-use PHPUnit\Framework\TestCase;
+namespace Suites;
 
-class TabulatorTest extends TestCase
+use Helpers\TableTypeTest;
+
+class TabulatorTest extends TableTypeTest
 {
     /**
      * Test get function.
@@ -18,10 +19,7 @@ class TabulatorTest extends TestCase
             
             END;
 
-        $this->assertSame($expectedTable, Tabulator::get([
-            ['put', 'some', 'data'],
-            ['print', 'new', 'table'],
-        ]));
+        $this->assertSame($expectedTable, $this->getSimpleTable());
     }
 
     /**
@@ -37,10 +35,7 @@ class TabulatorTest extends TestCase
             
             END;
 
-        $this->assertSame($expectedTable, Tabulator::get([
-            ['put', 'some', 10, 1.23],
-            ['print', 'new', 1, 1.2],
-        ]));
+        $this->assertSame($expectedTable, $this->getSimpleTableWithNumbers());
     }
 
     /**
@@ -56,9 +51,6 @@ class TabulatorTest extends TestCase
             
             END;
 
-        $this->assertSame($expectedTable, Tabulator::get(
-            [['print', 'new', 1, 1.2]],
-            ['put', 'some', 'foo', 'barbaz']
-        ));
+        $this->assertSame($expectedTable, $this->getSimpleTableWithNumbersAndHeader());
     }
 }
