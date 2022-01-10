@@ -2,6 +2,7 @@
 
 namespace AirPetr\Compositions;
 
+use AirPetr\Classes\ColumnTypes\StringType;
 use AirPetr\Classes\ThemeConfig;
 use AirPetr\Classes\TypesListFactory;
 
@@ -64,6 +65,145 @@ abstract class AbstractComposition
     }
 
     /**
+     * Return table.
+     *
+     * @return string
+     */
+    public function getTable(): string
+    {
+        ob_start();
+
+        $this->printTopBorder();
+        $this->printHeader();
+        $this->printBody();
+        $this->printBottomBorder();
+
+        $table = ob_get_contents();
+        ob_end_clean();
+        return $table;
+    }
+
+    /**
+     * Print table top border.
+     *
+     * @return void
+     */
+    protected function printTopBorder(): void
+    {
+        $this->printEmptyString();
+    }
+
+    /**
+     * Print table header.
+     *
+     * @return void
+     */
+    protected function printHeader(): void
+    {
+        if (!$this->headers) {
+            return;
+        }
+
+        $headers = [];
+        foreach ($this->headers as $key => $header) {
+            $headers[] = (new StringType())->getFormat($this->sizes[$key]);
+        }
+
+        $headerFormat = implode($this->getHeaderJoint(), $headers) . PHP_EOL;
+        printf($headerFormat, ...$this->headers);
+
+        $this->printHeaderBottomBorder();
+    }
+
+    /**
+     * Return joint of the header columns.
+     *
+     * @return string
+     */
+    protected function getHeaderJoint(): string
+    {
+        return $this->getBodyColumnJoint();
+    }
+
+    /**
+     * Print header bottom border.
+     *
+     * @return void
+     */
+    protected function printHeaderBottomBorder(): void
+    {
+        $this->printEmptyString();
+    }
+
+    /**
+     * Print table body.
+     *
+     * @return void
+     */
+    protected function printBody(): void
+    {
+        if (!$this->data) {
+            return;
+        }
+
+        foreach ($this->data as $key => $row) {
+            $columns = [];
+            foreach ($row as $key => $cell) {
+                $columns[] = $this->types[$key]->getFormat($this->sizes[$key]);
+            }
+
+            $rowFormat = implode($this->getBodyColumnJoint(), $columns) . PHP_EOL;
+            printf($rowFormat, ...$row);
+
+            if (!$this->isLastDataLine($key)) {
+                $this->printBodyRowJoint();
+            }
+        }
+    }
+
+    /**
+     * Return joint of the body columns.
+     *
+     * @return string
+     */
+    protected function getBodyColumnJoint(): string
+    {
+        return ' ';
+    }
+
+    /**
+     * Whether given key is the key of a last data row.
+     *
+     * @param int $dataKey
+     *
+     * @return bool
+     */
+    protected function isLastDataLine(int $dataKey): bool
+    {
+        return count($this->data) === ($dataKey + 1);
+    }
+
+    /**
+     * Print joint of the body rows.
+     *
+     * @return void
+     */
+    protected function printBodyRowJoint(): void
+    {
+        $this->printEmptyString();
+    }
+
+    /**
+     * Print table bottom border.
+     *
+     * @return void
+     */
+    protected function printBottomBorder(): void
+    {
+        $this->printEmptyString();
+    }
+
+    /**
      * Set column sizes.
      *
      * @return void
@@ -106,22 +246,12 @@ abstract class AbstractComposition
     }
 
     /**
-     * Return joint of the header columns.
+     * Print empty string.
      *
-     * @return string
+     * @return void
      */
-    protected function getHeaderJoint(): string
+    protected function printEmptyString(): void
     {
-        return $this->getBodyJoint();
-    }
-
-    /**
-     * Return joint of the body columns.
-     *
-     * @return string
-     */
-    protected function getBodyJoint(): string
-    {
-        return ' ';
+        echo '';
     }
 }
