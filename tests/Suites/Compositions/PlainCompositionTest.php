@@ -1,11 +1,11 @@
 <?php
 
-namespace Suites\Formatters;
+namespace Suites\Compositions;
 
 use AirPetr\Tabulator;
 use Helpers\TableTypeTest;
 
-class PlainFormatterTest extends TableTypeTest
+class PlainCompositionTest extends TableTypeTest
 {
     /**
      * Test get function.

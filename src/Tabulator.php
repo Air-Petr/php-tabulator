@@ -2,7 +2,7 @@
 
 namespace AirPetr;
 
-use AirPetr\Formatters\PlainFormatterAbstract;
+use AirPetr\Compositions\Plain;
 
 /**
  * Format data as table.
@@ -19,8 +19,7 @@ class Tabulator
      */
     public static function get(array $data, ?array $headers = []): string
     {
-        $formatter = new PlainFormatterAbstract($data, $headers);
-        return $formatter->getTable();
+        return Tabulator::getPlain($data, $headers);
     }
 
     /**
@@ -33,6 +32,7 @@ class Tabulator
      */
     public static function getPlain(array $data, ?array $headers = []): string
     {
-        return Tabulator::get($data, $headers);
+        $formatter = new Plain($data, $headers);
+        return $formatter->getTable();
     }
 }
