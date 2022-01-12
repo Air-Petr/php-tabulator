@@ -19,6 +19,6 @@ class Simple extends AbstractComposition
             $strings[] = str_repeat('-', $size);
         }
 
-        echo implode(' ', $strings) . "\n";
+        echo implode(' ', $strings) . PHP_EOL;
     }
 }

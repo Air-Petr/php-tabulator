@@ -36,12 +36,12 @@ function printFileData(string $fileName, bool $withHeader = false, string $type 
 }
 
 function printType(string $type): void {
-    echo "Table without header:\n\n";
+    echo "Table without header:" . PHP_EOL . PHP_EOL;
     printFileData('data_no_header.csv', false, $type);
 
-    echo "\n\n";
+    echo PHP_EOL . PHP_EOL;
 
-    echo "Table with header:\n\n";
+    echo "Table with header:" . PHP_EOL . PHP_EOL;
     printFileData('data.csv', true, $type);
 
     die();
