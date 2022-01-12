@@ -1,11 +1,11 @@
 <?php
 
-namespace Suites;
+namespace Suites\Formatters;
 
 use AirPetr\Tabulator;
 use Helpers\TableTypeTest;
 
-class TabulatorTest extends TableTypeTest
+class PlainFormatterTest extends TableTypeTest
 {
     /**
      * Test get function.
@@ -20,7 +20,7 @@ class TabulatorTest extends TableTypeTest
             
             END;
 
-        $this->assertSame($expectedTable, Tabulator::get($this->getTableData()));
+        $this->assertSame($expectedTable, Tabulator::getPlain($this->getTableData()));
     }
 
     /**
@@ -36,7 +36,7 @@ class TabulatorTest extends TableTypeTest
             
             END;
 
-        $this->assertSame($expectedTable, Tabulator::get($this->getTableDataWithNumbers()));
+        $this->assertSame($expectedTable, Tabulator::getPlain($this->getTableDataWithNumbers()));
     }
 
     /**
@@ -53,7 +53,7 @@ class TabulatorTest extends TableTypeTest
             
             END;
 
-        $this->assertSame($expectedTable, Tabulator::get(
+        $this->assertSame($expectedTable, Tabulator::getPlain(
             $this->getTableDataWithNumbers(),
             $this->getHeaderDataForNumbers()
         ));

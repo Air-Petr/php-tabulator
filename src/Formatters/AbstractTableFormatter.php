@@ -1,16 +1,11 @@
 <?php
 
-namespace AirPetr;
-
-use AirPetr\Classes\ColumnTypes\NumericType;
-use AirPetr\Classes\ColumnTypes\StringType;
-use AirPetr\Classes\TypesListFactory;
-use AirPetr\Compositions\Plain;
+namespace AirPetr\Formatters;
 
 /**
  * Format data to table.
  */
-class TableFormatter
+abstract class AbstractTableFormatter
 {
     /**
      * Data for table.
@@ -25,6 +20,13 @@ class TableFormatter
      * @var array|null
      */
     protected ?array $headers;
+
+    /**
+     * Return name of a composition class.
+     *
+     * @return mixed
+     */
+    abstract protected function compositionName();
 
     /**
      * @param array $data
@@ -43,17 +45,8 @@ class TableFormatter
      */
     public function getTable(): string
     {
-        return $this->getResultString();
-    }
-
-    /**
-     * Return table string.
-     *
-     * @return string
-     */
-    protected function getResultString(): string
-    {
-        $composition = new Plain($this->data, $this->headers);
+        $compositionName = $this->compositionName();
+        $composition = new $compositionName($this->data, $this->headers);
         return $composition->getTable();
     }
 }

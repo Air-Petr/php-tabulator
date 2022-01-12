@@ -8,54 +8,38 @@ use PHPUnit\Framework\TestCase;
 class TableTypeTest extends TestCase
 {
     /**
-     * Return simple table.
+     * Return table data for tests.
      *
-     * @return string
+     * @return \string[][]
      */
-    protected function getSimpleTable(): string
+    protected function getTableData(): array
     {
-        return Tabulator::get([
+        return [
             ['put', 'some', 'data'],
-            ['print', 'new', 'table'],
-        ]);
+            ['print', 'new', 'row'],
+        ];
     }
 
     /**
-     * Return simple table with header.
+     * Return table data with numbers for tests.
      *
-     * @return string
+     * @return \string[][]
      */
-    protected function getSimpleTableWithHeader(): string
+    protected function getTableDataWithNumbers(): array
     {
-        return Tabulator::get(
-            [['put', 'some', 'data']],
-            ['print', 'new', 'table'],
-        );
-    }
-
-    /**
-     * Return simple table with numbers.
-     *
-     * @return string
-     */
-    protected function getSimpleTableWithNumbers(): string
-    {
-        return Tabulator::get([
+        return [
             ['put', 'some', 10, 1.23],
             ['print', 'new', 1, 1.2],
-        ]);
+        ];
     }
 
     /**
-     * Return simple table with numbers and header.
+     * Return header data for tests with numbers.
      *
-     * @return string
+     * @return \string[][]
      */
-    protected function getSimpleTableWithNumbersAndHeader(): string
+    protected function getHeaderDataForNumbers(): array
     {
-        return Tabulator::get(
-            [['print', 'new', 1, 1.2]],
-            ['put', 'some', 'foo', 'barbaz']
-        );
+        return ['print', 'header', 'for', 'numbers'];
     }
 }
