@@ -5,14 +5,17 @@ namespace Suites\Compositions;
 use AirPetr\Tabulator;
 use Helpers\TableTypeTest;
 
-class PlainCompositionTest extends TableTypeTest
+/**
+ * Test for plain table type.
+ */
+class PlainTest extends TableTypeTest
 {
     /**
-     * Test get function.
+     * Test simple data.
      *
      * @return void
      */
-    public function testGetter(): void
+    public function testSimpleDataWithoutHeader(): void
     {
         $expectedTable = <<<END
             put   some data
