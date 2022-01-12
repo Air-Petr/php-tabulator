@@ -30,6 +30,9 @@ function printFileData(string $fileName, bool $withHeader = false, string $type 
         case 'simple':
             echo Tabulator::getSimple($body, $header);
             break;
+        case 'github':
+            echo Tabulator::getGitHub($body, $header);
+            break;
         default:
             echo Tabulator::getSimple($body, $header);
     }

@@ -104,13 +104,18 @@ abstract class AbstractComposition
             return;
         }
 
+        $this->printLeftHeaderBorder();
+
         $headers = [];
         foreach ($this->headers as $key => $header) {
             $headers[] = (new StringType())->getFormat($this->sizes[$key]);
         }
 
-        $headerFormat = implode($this->getHeaderJoint(), $headers) . PHP_EOL;
+        $headerFormat = implode($this->getHeaderJoint(), $headers);
         printf($headerFormat, ...$this->headers);
+
+        $this->printRightHeaderBorder();
+        echo PHP_EOL;
 
         $this->printHeaderBottomBorder();
     }
@@ -147,13 +152,18 @@ abstract class AbstractComposition
         }
 
         foreach ($this->data as $key => $row) {
+            $this->printLeftBodyBorder();
+
             $columns = [];
             foreach ($row as $key => $cell) {
                 $columns[] = $this->types[$key]->getFormat($this->sizes[$key]);
             }
 
-            $rowFormat = implode($this->getBodyColumnJoint(), $columns) . PHP_EOL;
+            $rowFormat = implode($this->getBodyColumnJoint(), $columns);
             printf($rowFormat, ...$row);
+
+            $this->printRightBodyBorder();
+            echo PHP_EOL;
 
             if (!$this->isLastDataLine($key)) {
                 $this->printBodyRowJoint();
@@ -253,5 +263,45 @@ abstract class AbstractComposition
     protected function printEmptyString(): void
     {
         echo '';
+    }
+
+    /**
+     * Print left border of the header.
+     *
+     * @return void
+     */
+    protected function printLeftHeaderBorder(): void
+    {
+        $this->printEmptyString();
+    }
+
+    /**
+     * Print right border of the header.
+     *
+     * @return void
+     */
+    protected function printRightHeaderBorder(): void
+    {
+        $this->printEmptyString();
+    }
+
+    /**
+     * Print left border of a body row.
+     *
+     * @return void
+     */
+    protected function printLeftBodyBorder(): void
+    {
+        $this->printEmptyString();
+    }
+
+    /**
+     * Print right border of a body row.
+     *
+     * @return void
+     */
+    protected function printRightBodyBorder(): void
+    {
+        $this->printEmptyString();
     }
 }

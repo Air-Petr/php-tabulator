@@ -2,6 +2,7 @@
 
 namespace AirPetr;
 
+use AirPetr\Compositions\GitHub;
 use AirPetr\Compositions\Plain;
 use AirPetr\Compositions\Simple;
 
@@ -38,7 +39,7 @@ class Tabulator
     }
 
     /**
-     * Return plain table.
+     * Return simple table.
      *
      * @param array $data
      * @param array|null $headers
@@ -48,6 +49,20 @@ class Tabulator
     public static function getSimple(array $data, ?array $headers = []): string
     {
         $formatter = new Simple($data, $headers);
+        return $formatter->getTable();
+    }
+
+    /**
+     * Return GitHub table.
+     *
+     * @param array $data
+     * @param array|null $headers
+     *
+     * @return string
+     */
+    public static function getGitHub(array $data, ?array $headers = []): string
+    {
+        $formatter = new GitHub($data, $headers);
         return $formatter->getTable();
     }
 }
