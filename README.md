@@ -1,4 +1,4 @@
-# PHP tabulate
+# PHP tabulator
 
 Pretty-print the tabular data in various ways.
 
