@@ -86,7 +86,7 @@ php demo/github.php
 # etc.
 ```
 
-## Testting
+## Testing
 
 Run tests by:
 
